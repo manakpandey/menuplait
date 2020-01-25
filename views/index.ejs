@@ -27,10 +27,26 @@
 
     <form method="POST">
       <div class="container">
-        <% for( let i = 0; i < name.length; i++ ) { %>
-        
-        <% } %>
-        <button class="btn btn-primary submit-button">Checkout</button>
+        <% for( let i = 0; i < menu.length; i++ ) { %>
+          <div class="card m-1">
+            <div class="d-flex flex-column">
+              <div class="p-2"><%= menu[i][0] %>
+                <img class="mb-1" src="/img/veg.png" style="width: 1rem;height: 1rem;">
+              </div>
+              <div class="p-0">
+                <div class="d-flex flex-row justify-content-between">
+                  <div class="p-2"><strong><%= menu[i][1] %></strong></div>
+                  <div class="p-2">
+                    <button class="btn btn-primary px-3">Add</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% } %>
+          <div class="p-5"></div>
+          <button class="btn btn-primary submit-button">Checkout</button>
+        </div>
       </div>
     </form>
 
