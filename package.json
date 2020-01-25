@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/manakpandey/gymkhaana#readme",
   "dependencies": {
+    "ejs": "^3.0.1",
     "express": "^4.17.1",
     "mongoose": "^5.8.9",
     "winston": "^3.2.1"
