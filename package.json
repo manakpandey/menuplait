@@ -1,0 +1,31 @@
+{
+  "name": "gymkhaana",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devstart": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manakpandey/gymkhaana.git"
+  },
+  "author": "Manak Pandey, Sagar Pandey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manakpandey/gymkhaana/issues"
+  },
+  "homepage": "https://github.com/manakpandey/gymkhaana#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.8.9",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0",
+    "nodemon": "^2.0.2"
+  }
+}
