@@ -1,59 +1,98 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>GYMkhaana</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-      <a class="navbar-brand">GYMkhaana</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Order History</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <form method="POST">
-      <div class="container">
-        <% for( let i = 0; i < menu.length; i++ ) { %>
-          <div class="card m-1">
-            <div class="d-flex flex-column">
-              <div class="p-2"><%= menu[i][0] %>
-                <img class="mb-1" src="/img/veg.png" style="width: 1rem;height: 1rem;">
-              </div>
-              <div class="p-0">
-                <div class="d-flex flex-row justify-content-between">
-                  <div class="p-2"><strong><%= menu[i][1] %></strong></div>
-                  <div class="p-2">
-                    <button class="btn btn-primary px-3">Add</button>
-                    </div>
-                  </div>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>GYM Khaana</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+    <a class="navbar-brand">GYM Khaana</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Order History</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <form method="POST">
+    <div class="container">
+      <% for( let i = 0; i < menu.length; i++ ) { %>
+      <div class="card m-1">
+        <div class="d-flex flex-column">
+          <div class="p-2"><%= menu[i][0] %>
+            <% if (menu[i][2]) { %>
+            <img class="mb-1" src="/img/veg.png" style="width: 1rem;height: 1rem;">
+            <% } else { %>
+            <img class="mb-1" src="/img/nveg.png" style="width: 1rem;height: 1rem;">
+            <% } %>
+          </div>
+          <div class="p-0">
+            <div class="d-flex flex-row justify-content-between">
+              <div class="p-2"><strong>&#8377 <%= menu[i][1] %></strong></div>
+              <div class="p-2">
+                <div class="btn-group" role="group" style="visibility:hidden" id=<%= `addn${i}` %>>
+                  <button type="button" class="btn btn-secondary" onclick=<%= `subn(${i})` %>>-</button>
+                  <input type="number" class="form-control quantity-spinner" id=<%= `quan${i}` %> value=0 readonly>
+                  <button type="button" class="btn btn-secondary" onclick=<%= `addn(${i})` %>>+</button>
                 </div>
+                <button type="button" class="btn btn-primary px-3" id=<%= `add${i}` %>
+                  onclick=<%= `add(${i})` %>>Add</button>
               </div>
             </div>
-          <% } %>
-          <div class="p-5"></div>
-          <button class="btn btn-primary submit-button">Checkout</button>
+          </div>
         </div>
       </div>
-    </form>
+      <% } %>
+      <div class="p-5"></div>
+      <button class="btn btn-primary submit-button">Checkout</button>
+    </div>
+    </div>
+  </form>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script>
+    function add(id) {
+      document.getElementById(`quan${id}`).value++
+      document.getElementById(`add${id}`).style.display = "none"
+      document.getElementById(`addn${id}`).style.visibility = "visible"
+    }
+    function addn(id) {
+      document.getElementById(`quan${id}`).value++
+    }
+    function subn(id) {
+      let quan = document.getElementById(`quan${id}`)
+      if (quan.value == 0)
+        return
+      if (quan.value == 1) {
+        quan.value--
+        document.getElementById(`add${id}`).style.display = "inline"
+        document.getElementById(`addn${id}`).style.visibility = "hidden"
+      }
+      quan.value--
+    }
+
+  </script>
+</body>
+
 </html>

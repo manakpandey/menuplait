@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const logger = require('./winston');
 const { dbUrl } = require('./config');
-const router = require('./routes/route');
+const router = require('./routes/menu.route');
 
 const app = express();
 const port = 3000;
