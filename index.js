@@ -13,8 +13,12 @@ app.set('view engine', 'ejs');
 
 app.use('/', router);
 
-mongoose.connect(dbUrl, { useNewUrlParser: true }).catch((error) => {
-  logger.error(`Connection Error: ${error}`);
-});
+mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    logger.info('Successful connection to Database');
+  })
+  .catch((error) => {
+    logger.error(`Connection Error: ${error}`);
+  });
 
 app.listen(port, () => logger.info(`App Listening on port ${port}`));
