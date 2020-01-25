@@ -1,0 +1,8 @@
+.submit-button{
+    position: fixed;
+    z-index: 99;
+    bottom:2vh;
+    left: 2vw;
+    width: 96vw;
+    right: 2vw;
+}
