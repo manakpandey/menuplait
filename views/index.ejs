@@ -28,9 +28,9 @@
   </nav>
 
   <form method="POST">
-    <div class="container">
+    <div class="container" id="menu">
       <% for( let i = 0; i < menu.length; i++ ) { %>
-      <div class="card m-1">
+      <div class="card m-1" id=<%= `item${i}` %>>
         <div class="d-flex flex-column">
           <div class="p-2"><%= menu[i][0] %>
             <% if (menu[i][2]) { %>
@@ -44,21 +44,61 @@
               <div class="p-2"><strong>&#8377 <%= menu[i][1] %></strong></div>
               <div class="p-2">
                 <div class="btn-group" role="group" style="visibility:hidden" id=<%= `addn${i}` %>>
-                  <button type="button" class="btn btn-secondary" onclick=<%= `subn(${i})` %>>-</button>
-                  <input type="number" class="form-control quantity-spinner" id=<%= `quan${i}` %> value=0 readonly>
-                  <button type="button" class="btn btn-secondary" onclick=<%= `addn(${i})` %>>+</button>
+                  <button type="button" class="btn btn-secondary" onclick=<%= `subn(${i},${menu.length},${menu[i][1]})` %>>-</button>
+                  <input type="number" class="form-control quantity-spinner" name=<%= `quan${i}` %> id=<%= `quan${i}` %>
+                    value=0 readonly>
+                  <button type="button" class="btn btn-secondary" onclick=<%= `addn(${i},${menu[i][1]})` %>>+</button>
                 </div>
                 <button type="button" class="btn btn-primary px-3" id=<%= `add${i}` %>
-                  onclick=<%= `add(${i})` %>>Add</button>
+                  onclick=<%= `add(${i},${menu[i][1]})` %>>Add</button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <% } %>
-      <div class="p-5"></div>
-      <button class="btn btn-primary submit-button">Checkout</button>
+      <div class="d-flex flex-row justify-content-center mt-3">
+        <div class="p-3 btn btn-outline-dark" onclick=<%= `addMore(${menu.length})` %> style="visibility: hidden;"
+          id="addMore">
+          <img src="/img/food.svg" class="p-1" style="width: 1.5rem;height: 1.5rem">
+          <a class="p-1">Add More</a>
+        </div>
+      </div>
+      <button type="button" id="checkout" class="btn btn-primary submit-button"
+        onclick=<%= `confirmOrder(${menu.length})` %>>Checkout</button>
+      <div class="confirm-button p-4" id="confirm">
+        <div class="d-flex flex-row justify-content-between pb-2">
+          <p class="h6">Total</p>
+          <p class="h6" id="totalAmt">&#8377 500</p>
+        </div>
+        <button type="button" class="btn btn-success" id="confirmButton" style="width: 100%;">Confirm Order</button>
+      </div>
     </div>
+    <div class="container" id="userDetails" style="display: none;">
+      <div class="my-4">
+        <input type="text" class="form-control m-1" name="username" id="username" placeholder="Name" required>
+        <input type="tel" pattern="[1-9][0-9]{9}" class="form-control m-1" name="userNum" id="userNum"
+          placeholder="Mobile Number" required>
+      </div>
+      <div class="container">
+        <div class="form-check p-2">
+          <input class="form-check-input" type="radio" name="pType" id="gpay" value="0" required>
+          <label class="form-check-label" for="gpay">
+            <img src="/img/gpay.svg" style="width: auto;height:2rem">
+          </label>
+        </div>
+        <div class="form-check p-2">
+          <input class="form-check-input" type="radio" name="pType" id="paytm" value="1" required>
+          <label class="form-check-label" for="paytm">
+            <img src="/img/paytm.svg" style="width: auto;height:2rem">
+          </label>
+        </div>
+        <div class="form-check p-2">
+          <input class="form-check-input" type="radio" name="pType" id="cash" value="2" required>
+          <label class="form-check-label" for="cash">Cash</label>
+        </div>
+      </div>
+      <button class="btn btn-success submit-button" style="visibility: visible;">Place Order</button>
     </div>
   </form>
 
@@ -72,26 +112,84 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
   <script>
-    function add(id) {
+    let total = 0
+    let totalAmt = 0
+    let confirmFlag = false
+    function add(id,price) {
       document.getElementById(`quan${id}`).value++
+      total++
+      totalAmt+=price
       document.getElementById(`add${id}`).style.display = "none"
       document.getElementById(`addn${id}`).style.visibility = "visible"
+      if (total >= 1) {
+        document.getElementById('checkout').style.visibility = "visible"
+      }
+      updateTotal()
     }
-    function addn(id) {
+    function addn(id,price) {
       document.getElementById(`quan${id}`).value++
+      total++
+      totalAmt+=price
+      updateTotal()
     }
-    function subn(id) {
+    function subn(id, len, price) {
       let quan = document.getElementById(`quan${id}`)
       if (quan.value == 0)
         return
       if (quan.value == 1) {
         quan.value--
+        total--
+        totalAmt-=price
+        if (confirmFlag) {
+          document.getElementById(`item${id}`).style.display = "none"
+          if (total == 0) {
+            addMore(len)
+          }
+        }
         document.getElementById(`add${id}`).style.display = "inline"
         document.getElementById(`addn${id}`).style.visibility = "hidden"
       }
-      quan.value--
+      else {
+        quan.value--
+        total--
+        totalAmt-=price
+      }
+      if (total == 0) {
+        document.getElementById('checkout').style.visibility = "hidden"
+      }
+      updateTotal()
+    }
+    function confirmOrder(len) {
+      for (let i = 0; i < len; i++) {
+        if ($(`#quan${i}`).val() == 0) {
+          document.getElementById(`item${i}`).style.display = "none"
+        }
+      }
+      document.getElementById('checkout').style.visibility = "hidden"
+      document.getElementById('confirm').style.visibility = "visible"
+      document.getElementById('addMore').style.visibility = "visible"
+      updateTotal()
+      confirmFlag = true
+    }
+    function addMore(len) {
+      for (let i = 0; i < len; i++) {
+        if ($(`#quan${i}`).val() == 0) {
+          document.getElementById(`item${i}`).style.display = "block"
+        }
+      }
+      confirmFlag = false
+      document.getElementById('checkout').style.visibility = "visible"
+      document.getElementById('confirm').style.visibility = "hidden"
+      document.getElementById('addMore').style.visibility = "hidden"
+    }
+    function updateTotal(){
+      document.getElementById('totalAmt').innerHTML = `&#8377 ${totalAmt}`
     }
 
+    $('#confirmButton').click(() => {
+      $('#menu').hide()
+      $('#userDetails').show()
+    })
   </script>
 </body>
 

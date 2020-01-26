@@ -2,9 +2,21 @@
     position: fixed;
     z-index: 99;
     bottom:2vh;
-    left: 2vw;
-    width: 96vw;
-    right: 2vw;
+    left: 4vw;
+    width: 92vw;
+    right: 4vw;
+    visibility: hidden;
+}
+
+.confirm-button{
+    position: fixed;
+    z-index: 99;
+    bottom:0;
+    left: 0;
+    width: 100vw;
+    right: 0;
+    visibility: hidden;
+    background-color: whitesmoke;
 }
 
 .quantity-spinner{
