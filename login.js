@@ -2,7 +2,6 @@ const logger = require('./winston');
 const User = require('./models/user.model');
 
 exports.verifyUser = (username, password, done) => {
-  logger.debug(username);
   User.findById(username, (err, user) => {
     if (err) {
       logger.error(err);
