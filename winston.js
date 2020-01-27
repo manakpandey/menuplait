@@ -2,7 +2,7 @@ const { createLogger, format, transports } = require('winston');
 
 const logger = createLogger({
   level: 'debug',
-  format: format.simple(),
+  format: format.json(),
   transports: [new transports.Console()],
 });
 
