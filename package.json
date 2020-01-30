@@ -8,12 +8,14 @@
     "devstart": "nodemon index.js"
   },
   "husky": {
-    "hooks":{
+    "hooks": {
       "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
-    "*.js": ["eslint --fix"]
+    "*.js": [
+      "eslint --fix"
+    ]
   },
   "repository": {
     "type": "git",
