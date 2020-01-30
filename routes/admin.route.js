@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const passport = require('passport');
+const { getDashboard } = require('../controllers/admin.controller');
 
 const router = Router();
 
@@ -14,12 +15,6 @@ router.get('/login', (req, res) => {
   res.render('login', { flash: req.flash().error });
 });
 
-router.get('/', (req, res) => {
-  if (!req.user) {
-    res.redirect('/admin/login');
-    return;
-  }
-  res.render('admin');
-});
+router.get('/', getDashboard);
 
 module.exports = router;

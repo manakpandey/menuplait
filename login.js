@@ -8,11 +8,9 @@ exports.verifyUser = (username, password, done) => {
       return done(err);
     }
     if (!user) {
-      logger.debug('Incorrect Username');
       return done(null, false, { message: 'Incorrect username.' });
     }
     if (!user.validPassword(password)) {
-      logger.debug('Incorrect Password');
       return done(null, false, { message: 'Incorrect password.' });
     }
     return done(null, user);
