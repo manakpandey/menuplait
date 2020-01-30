@@ -32,8 +32,8 @@
       <% for( let i = 0; i < menu.length; i++ ) { %>
       <div class="card m-1" id=<%= `item${i}` %>>
         <div class="d-flex flex-column">
-          <div class="p-2"><%= menu[i][0] %>
-            <% if (menu[i][2]) { %>
+          <div class="p-2"><%= menu[i].id %>
+            <% if (menu[i].veg) { %>
             <img class="mb-1" src="/img/veg.png" style="width: 1rem;height: 1rem;">
             <% } else { %>
             <img class="mb-1" src="/img/nveg.png" style="width: 1rem;height: 1rem;">
@@ -41,16 +41,16 @@
           </div>
           <div class="p-0">
             <div class="d-flex flex-row justify-content-between">
-              <div class="p-2"><strong>&#8377 <%= menu[i][1] %></strong></div>
+              <div class="p-2"><strong>&#8377 <%= menu[i].price %></strong></div>
               <div class="p-2">
                 <div class="btn-group" role="group" style="visibility:hidden" id=<%= `addn${i}` %>>
-                  <button type="button" class="btn btn-secondary" onclick=<%= `subn(${i},${menu.length},${menu[i][1]})` %>>-</button>
+                  <button type="button" class="btn btn-secondary" onclick=<%= `subn(${i},${menu.length},${menu[i].price})` %>>-</button>
                   <input type="number" class="form-control quantity-spinner" name=<%= `quan${i}` %> id=<%= `quan${i}` %>
                     value=0 readonly>
-                  <button type="button" class="btn btn-secondary" onclick=<%= `addn(${i},${menu[i][1]})` %>>+</button>
+                  <button type="button" class="btn btn-secondary" onclick=<%= `addn(${i},${menu[i].price})` %>>+</button>
                 </div>
                 <button type="button" class="btn btn-primary px-3" id=<%= `add${i}` %>
-                  onclick=<%= `add(${i},${menu[i][1]})` %>>Add</button>
+                  onclick=<%= `add(${i},${menu[i].price})` %>>Add</button>
               </div>
             </div>
           </div>

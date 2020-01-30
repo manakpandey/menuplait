@@ -30,15 +30,17 @@
         <h4>Alter Menu</h4>
       </div>
       <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#exampleModal1">Add New
+        <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#addItemModal">Add New
           Item</button>
       </div>
-      <div class="modal fade main" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+
+      <!--AddItemModal starts-->
+      <div class="modal fade main" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Edit Item Details</h5>
+              <h5 class="modal-title" id="addItemModalLabel">Edit Item Details</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -47,44 +49,48 @@
               <div class="d-flex justify-content-center">
 
                 <div class="container">
-                  <form>
+                  <form action="/admin/addMenuItem" method="POST">
                     <div class="form-group">
                       <label>Item name</label>
-                      <input type="text" class="form-control" id="itemname">
+                      <input type="text" class="form-control" name="title" id="itemName" required>
                     </div>
                     <div class="input-group mb-2 mr-sm-2">
                       <div class="input-group-prepend">
                         <div class="input-group-text">&#8377</div>
                       </div>
-                      <input type="number" min="1" class="form-control" id="itemprice" placeholder="Price">
+                      <input type="number" min="1" class="form-control" name="price" id="itemPrice" placeholder="Price"
+                        required>
                     </div>
                     <div class="form-group">
                       <label>Category</label>
-                      <input type="text" class="form-control" id="itemcategory">
+                      <input type="text" class="form-control" name="category" id="itemcategory" required>
                     </div>
                     <div class="form-group">
                       <label>State</label>
-                      <select id="inputState" class="form-control">
-                        <option selected>Veg</option>
-                        <option>Non-Veg</option>
+                      <select id="foodType" name="veg" class="form-control" required>
+                        <option value="true">Veg</option>
+                        <option value="false">Non-Veg</option>
                       </select>
                     </div>
-                  </form>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-primary">Add to menu</button>
+              <button type="submit" class="btn btn-primary">Add to menu</button>
             </div>
+            </form>
           </div>
         </div>
       </div>
+      <!--AddItemModal ends-->
+
+      <!--Menu Table Starts-->
       <table class="table table-striped" id="myTable">
         <thead>
           <tr>
             <th scope="col">Id</th>
-            <th scope="col">Item</th>
+            <th scope="col">Name</th>
             <th scope="col">Price</th>
             <th scope="col">Category</th>
             <th scope="col">State</th>
@@ -92,12 +98,17 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr>
-            <th scope="row">1</th>
-            <td id="item">Item 1</td>
-            <td id="price">180</td>
-            <td id="category">Main Course</td>
-            <td id="state">Veg</td>
+          <% for( let i = 0; i < menu.length; i++ ) { %>
+          <tr>
+            <th scope="row"><%= i+1 %></th>
+            <td><%= menu[i].id %></td>
+            <td><%= menu[i].price %></td>
+            <td><%= menu[i].category %></td>
+            <% if (menu[i].veg) { %>
+            <td>Veg</td>
+            <% } else {%>
+            <td>Non-Veg</td>
+            <% } %>
             <td><button type="button" class="btn btn-outline-primary" data-toggle="modal"
                 data-target="#exampleModal2">Modify</td>
             <div class="modal fade main" id="exampleModal2" tabindex="-1" role="dialog"
@@ -147,9 +158,15 @@
                 </div>
               </div>
             </div>
-          </tr> -->
+          </tr>
+          <% } %>
+
+
+
         </tbody>
       </table>
+      <!--Menu Table Starts-->
+
     </div>
   </div>
 

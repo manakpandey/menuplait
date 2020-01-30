@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const passport = require('passport');
-const { getDashboard } = require('../controllers/admin.controller');
+const { getDashboard, postAddMenuItem } = require('../controllers/admin.controller');
 
 const router = Router();
 
@@ -16,5 +16,6 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/', getDashboard);
+router.post('/addMenuItem', postAddMenuItem);
 
 module.exports = router;
