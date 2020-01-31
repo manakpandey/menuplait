@@ -1,6 +1,7 @@
 const { sanitizeBody } = require('express-validator');
 const logger = require('../winston');
 const Menu = require('../models/menu.model');
+const Order = require('../models/order.model');
 
 exports.getMenu = (req, res) => {
   Menu.find({}, (err, menu) => {
@@ -15,8 +16,36 @@ exports.getMenu = (req, res) => {
 exports.postOrder = [
   sanitizeBody('*').escape(),
   (req, res) => {
-    Object.keys(req.body).forEach((key) => {
-      logger.debug(req.body[key]);
+    Menu.find({}, (err, menu) => {
+      if (err) {
+        logger.error(err);
+        return;
+      }
+      logger.debug(menu);
+      const items = [];
+      const quants = [];
+      let amt = 0;
+      for (let i = 0; i < menu.length; i += 1) {
+        if (req.body[`quan${i}`] !== '0') {
+          const item = menu[i];
+          const quantity = parseInt(req.body[`quan${i}`], 8);
+          items.push(item.id);
+          quants.push(quantity);
+          amt += menu[i].price * quantity;
+        }
+      }
+      const order = new Order({
+        custName: req.body.username,
+        custNumber: req.body.userNum,
+        amt,
+        items: {
+          itemId: items,
+          quantity: quants,
+        },
+      });
+
+      order.save();
+      logger.debug(items);
     });
     res.render('okay');
   },

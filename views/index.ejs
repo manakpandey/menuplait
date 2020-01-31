@@ -44,7 +44,7 @@
               <div class="p-2">
                 <div class="btn-group" role="group" style="visibility:hidden" id=<%= `addn${i}` %>>
                   <button type="button" class="btn btn-secondary" onclick=<%= `subn(${i},${menu.length},${menu[i].price})` %>>-</button>
-                  <input type="number" class="form-control quantity-spinner" name=<%= `quan${i}` %> id=<%= `quan${i}` %>
+                  <input type="number" class="form-control" style="width: 3rem;" name=<%= `quan${i}` %> id=<%= `quan${i}` %>
                     value=0 readonly>
                   <button type="button" class="btn btn-secondary" onclick=<%= `addn(${i},${menu[i].price})` %>>+</button>
                 </div>
@@ -97,7 +97,7 @@
           <label class="form-check-label" for="cash">Cash</label>
         </div>
       </div>
-      <button type="submit" class="btn btn-success submit-button" style="visibility: visible;">Place Order</button>
+      <button type="submit" class="btn btn-success submit-button" id="placeOrder"  style="visibility: visible;">Place Order</button>
     </div>
   </form>
 

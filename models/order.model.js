@@ -6,10 +6,10 @@ const orderSchema = new Schema({
   custName: String,
   custNumber: Number,
   amt: Number,
-  items: [{
-    id: String,
-    quantity: Number,
-  }],
+  items: {
+    itemId: [String],
+    quantity: [Number],
+  },
   placed: {
     type: Boolean,
     default: false,
