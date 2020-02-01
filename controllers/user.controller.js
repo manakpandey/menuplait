@@ -21,7 +21,6 @@ exports.postOrder = [
         logger.error(err);
         return;
       }
-      logger.debug(menu);
       const items = [];
       const quants = [];
       let amt = 0;
@@ -44,8 +43,9 @@ exports.postOrder = [
         },
       });
 
-      order.save();
-      logger.debug(items);
+      order.save((error) => {
+        logger.error(error);
+      });
     });
     res.render('okay');
   },
