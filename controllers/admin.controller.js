@@ -1,7 +1,21 @@
 const logger = require('../winston');
+const Order = require('../models/order.model');
 const Menu = require('../models/menu.model');
 
 exports.getDashboard = (req, res) => {
+  if (!req.user) {
+    res.redirect('/admin/login');
+    return;
+  }
+  Order.find({ completed: true }, (err, orders) => {
+    if (err) {
+      logger.error(err);
+    }
+    res.render('adminDashboard', { orders });
+  });
+};
+
+exports.getAlterMenu = (req, res) => {
   if (!req.user) {
     res.redirect('/admin/login');
     return;
@@ -10,6 +24,6 @@ exports.getDashboard = (req, res) => {
     if (err) {
       logger.error(err);
     }
-    res.render('admin', { menu });
+    res.render('alterMenu', { menu });
   });
 };

@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const passport = require('passport');
-const { getDashboard } = require('../controllers/admin.controller');
+const { getDashboard, getAlterMenu } = require('../controllers/admin.controller');
 const { postAddMenuItem, modifyMenuItem } = require('../controllers/modifyMenu.controller');
 
 const router = Router();
@@ -17,6 +17,7 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/', getDashboard);
+router.get('/menu', getAlterMenu);
 router.post('/addMenuItem', postAddMenuItem);
 router.post('/modifyMenu', modifyMenuItem);
 
