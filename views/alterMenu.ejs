@@ -11,119 +11,112 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">
-      GYM Khaana
-    </a>
+  <nav class="sidebar p-4">
+    <div class="h2 m-2">GYM Khaana</div>
+    <ul class="nav nav-pills nav-fill flex-column mt-4">
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/admin/menu">Menu</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/admin/orders">Order History</a>
+      </li>
+    </ul>
   </nav>
-
-  <nav class="sidebar">
-    <div class="container">
-      <ul class="list-group">
-        <li class="list-group-item"><a href="/admin">Dashboard</a></li>
-        <li class="list-group-item disabled">Alter Menu</li>
-        <li class="list-group-item"><a href="/admin/orderHistory">Order History</a></li>
-      </ul>
-    </div>
-  </nav>
-  <div class="container">
-    <div class="row">
-      <div class="col-12 col-md-2">
-
+  <div class="content">
+    <div class="navbar navbar-dark bg-dark"></div>
+    <div class="display-4 text-center">Alter Menu</div>
+    <div class="p-4">
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button justify-self-end" class="btn btn-primary mb-4" data-toggle="modal"
+          data-target="#addItemModal">Add New
+          Item</button>
       </div>
-      <div class="col-12 col-md-10">
-        <div class="display-4 text-center">Alter Menu</div>
-        <div class="d-flex justify-content-end mt-4">
-          <button type="button justify-self-end" class="btn btn-primary mb-4" data-toggle="modal"
-            data-target="#addItemModal">Add New
-            Item</button>
-        </div>
-
-        <!--Menu Table Starts-->
-        <table class="table table-striped" id="myTable">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Price</th>
-              <th scope="col">Category</th>
-              <th scope="col">State</th>
-              <th scope="col">Modify</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% for( let i = 0; i < menu.length; i++ ) { %>
-            <tr>
-              <th scope="row"><%= menu[i].id %></th>
-              <td>&#8377 <%= menu[i].price %></td>
-              <td><%= menu[i].category %></td>
-              <% if (menu[i].veg) { %>
-              <td>Veg</td>
-              <% } else {%>
-              <td>Non-Veg</td>
-              <% } %>
-              <td><button type="button" class="btn btn-outline-primary" data-toggle="modal"
-                  data-target=<%= `#modifyModal${i}` %>>Modify</td>
-              <div class="modal fade main" id=<%= `modifyModal${i}` %> tabindex="-1" role="dialog"
-                aria-labelledby=<%= `modifyModalLabel${i}` %> aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id=<%= `modifyModal${i}` %>>Edit Item Details</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <form action="/admin/modifyMenu" method="POST">
-                      <div class="modal-body">
-                        <div class="d-flex justify-content-center">
-                          <div class="container">
-                            <div class="form-group">
-                              <label>Item name</label>
-                              <input type="text" class="form-control" name="title" value="<%= menu[i].id %>" readonly>
+      <!--Menu Table Starts-->
+      <table class="table table-striped p-3" id="myTable">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Category</th>
+            <th scope="col">State</th>
+            <th scope="col">Modify</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for( let i = 0; i < menu.length; i++ ) { %>
+          <tr>
+            <th scope="row"><%= menu[i].id %></th>
+            <td>&#8377 <%= menu[i].price %></td>
+            <td><%= menu[i].category %></td>
+            <% if (menu[i].veg) { %>
+            <td>Veg</td>
+            <% } else {%>
+            <td>Non-Veg</td>
+            <% } %>
+            <td><button type="button" class="btn btn-outline-primary" data-toggle="modal"
+                data-target=<%= `#modifyModal${i}` %>>Modify</td>
+            <div class="modal fade main" id=<%= `modifyModal${i}` %> tabindex="-1" role="dialog"
+              aria-labelledby=<%= `modifyModalLabel${i}` %> aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id=<%= `modifyModal${i}` %>>Edit Item Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form action="/admin/modifyMenu" method="POST">
+                    <div class="modal-body">
+                      <div class="d-flex justify-content-center">
+                        <div class="container">
+                          <div class="form-group">
+                            <label>Item name</label>
+                            <input type="text" class="form-control" name="title" value="<%= menu[i].id %>" readonly>
+                          </div>
+                          <div class="input-group mb-2 mr-sm-2">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">&#8377</div>
                             </div>
-                            <div class="input-group mb-2 mr-sm-2">
-                              <div class="input-group-prepend">
-                                <div class="input-group-text">&#8377</div>
-                              </div>
-                              <input type="number" min="1" name="price" class="form-control" placeholder="Price"
-                                value=<%= menu[i].price %>>
-                            </div>
-                            <div class="form-group">
-                              <label>Category</label>
-                              <input type="text" name="category" class="form-control" value=<%= menu[i].category %>>
-                            </div>
-                            <div class="form-group">
-                              <label>State</label>
-                              <select name="veg" class="form-control">
-                                <% if (menu[i].veg) { %>
-                                <option value="true" selected>Veg</option>
-                                <option value="false">Non-Veg</option>
-                                <% } else { %>
-                                <option value="true">Veg</option>
-                                <option value="false" selected>Non-Veg</option>
-                                <% } %>
-                              </select>
-                            </div>
+                            <input type="number" min="1" name="price" class="form-control" placeholder="Price"
+                              value=<%= menu[i].price %>>
+                          </div>
+                          <div class="form-group">
+                            <label>Category</label>
+                            <input type="text" name="category" class="form-control" value=<%= menu[i].category %>>
+                          </div>
+                          <div class="form-group">
+                            <label>State</label>
+                            <select name="veg" class="form-control">
+                              <% if (menu[i].veg) { %>
+                              <option value="true" selected>Veg</option>
+                              <option value="false">Non-Veg</option>
+                              <% } else { %>
+                              <option value="true">Veg</option>
+                              <option value="false" selected>Non-Veg</option>
+                              <% } %>
+                            </select>
                           </div>
                         </div>
                       </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                      </div>
-                    </form>
-                  </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </form>
                 </div>
               </div>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
-        <!--Menu Table Ends-->
-      </div>
+            </div>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+      <!--Menu Table Ends-->
     </div>
   </div>
-
 
   <!--AddItemModal starts-->
   <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel"
