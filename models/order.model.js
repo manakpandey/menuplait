@@ -9,6 +9,7 @@ const orderSchema = new Schema({
   items: {
     itemId: [String],
     quantity: [Number],
+    price: [Number],
   },
   placed: {
     type: Boolean,
@@ -18,6 +19,12 @@ const orderSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  payType: {
+    type: String,
+    enum: ['cash', 'paytm', 'gpay'],
+  },
+}, {
+  timestamps: true,
 });
 
 module.exports = mongoose.model('order', orderSchema);

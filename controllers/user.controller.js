@@ -23,6 +23,7 @@ exports.postOrder = [
       }
       const items = [];
       const quants = [];
+      const price = [];
       let amt = 0;
       for (let i = 0; i < menu.length; i += 1) {
         if (req.body[`quan${i}`] !== '0') {
@@ -30,6 +31,7 @@ exports.postOrder = [
           const quantity = parseInt(req.body[`quan${i}`], 8);
           items.push(item.id);
           quants.push(quantity);
+          price.push(menu[i].price);
           amt += menu[i].price * quantity;
         }
       }
@@ -40,7 +42,9 @@ exports.postOrder = [
         items: {
           itemId: items,
           quantity: quants,
+          price,
         },
+        payType: req.body.pType,
       });
 
       order.save((error) => {

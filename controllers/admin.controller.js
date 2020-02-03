@@ -7,7 +7,7 @@ exports.getDashboard = (req, res) => {
     res.redirect('/admin/login');
     return;
   }
-  Order.find({ completed: true }, (err, orders) => {
+  Order.find({ placed: true }, (err, orders) => {
     if (err) {
       logger.error(err);
     }
