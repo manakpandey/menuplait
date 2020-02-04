@@ -60,3 +60,20 @@ exports.postOrder = [
     }
   },
 ];
+
+exports.getUserOrders = (req, res) => {
+  res.render('userOrders');
+};
+
+exports.postUserOrders = [
+  sanitizeBody('*').escape(),
+  (req, res) => {
+    Order.find({ custName: req.body.custName, custNumber: req.body.custNumber }, (err, orders) => {
+      if (err) {
+        logger.error(`Error finding customer orders: ${err}`);
+        return;
+      }
+      res.render('userOrderResults', { orders });
+    });
+  },
+];
