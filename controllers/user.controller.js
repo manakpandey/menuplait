@@ -48,9 +48,15 @@ exports.postOrder = [
       });
 
       order.save((error) => {
-        logger.error(error);
+        if (error) {
+          logger.error(`Error saving order: ${error}`);
+        }
       });
     });
-    res.render('okay');
+    if (req.body.pType === 'cash') {
+      res.render('orderCashPay');
+    } else {
+      res.render('orderPlaced');
+    }
   },
 ];
