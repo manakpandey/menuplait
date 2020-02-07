@@ -73,7 +73,8 @@ exports.postUserOrders = [
         logger.error(`Error finding customer orders: ${err}`);
         return;
       }
-      res.render('userOrderResults', { orders });
+      logger.debug(orders)
+      res.render('userOrdersResult', { orders });
     });
   },
 ];
