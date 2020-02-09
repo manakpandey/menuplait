@@ -35,6 +35,10 @@ exports.postOrder = [
           amt += menu[i].price * quantity;
         }
       }
+      let placed = true;
+      // for until no payment gateway
+      if (req.body.ptype === 'cash') placed = false;
+
       const order = new Order({
         custName: req.body.username,
         custNumber: req.body.userNum,
@@ -45,6 +49,7 @@ exports.postOrder = [
           price,
         },
         payType: req.body.pType,
+        placed,
       });
 
       order.save((error) => {
@@ -73,7 +78,7 @@ exports.postUserOrders = [
         logger.error(`Error finding customer orders: ${err}`);
         return;
       }
-      logger.debug(orders)
+      logger.debug(orders);
       res.render('userOrdersResult', { orders });
     });
   },

@@ -1,4 +1,4 @@
 module.exports = {
-  dbUrl: 'mongodb+srv://test:UxPBaShONp9clyqq@development-fvrip.mongodb.net/test?retryWrites=true&w=majority',
+  dbUrl: 'mongodb://localhost:27017',
   secretKey: 'esxrdtcyfvguhij',
 };

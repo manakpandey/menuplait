@@ -1,6 +1,7 @@
 const { sanitizeBody } = require('express-validator');
 const logger = require('../winston');
 const Menu = require('../models/menu.model');
+const Category = require('../models/menu.category.model');
 
 exports.postAddMenuItem = [
   sanitizeBody('*').escape(),
@@ -9,7 +10,7 @@ exports.postAddMenuItem = [
       res.redirect('/admin/login');
       return;
     }
-    const item = Menu.findById(req.body.title);
+    const item = await Menu.findById(req.body.title);
     if (!item) {
       const menuItem = new Menu({
         _id: req.body.title,
@@ -23,7 +24,7 @@ exports.postAddMenuItem = [
         }
       });
     }
-    res.redirect('/admin');
+    res.redirect('/admin/menu');
   },
 ];
 
@@ -43,7 +44,27 @@ exports.modifyMenuItem = [
         logger.error(err);
         return;
       }
-      res.redirect('/admin');
+      res.redirect('/admin/menu');
+    });
+  },
+];
+
+exports.addCategory = [
+  sanitizeBody('*').escape(),
+  async (req, res) => {
+    if (!req.user) {
+      res.redirect('/admin/login');
+      return;
+    }
+    const category = new Category({
+      title: req.body.name,
+    });
+    category.save((err) => {
+      if (err) {
+        logger.error(err);
+        return;
+      }
+      res.redirect('/admin/menu');
     });
   },
 ];

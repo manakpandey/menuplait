@@ -1,29 +1,33 @@
-const logger = require('../winston');
+const { sanitizeBody } = require('express-validator');
 const Order = require('../models/order.model');
 const Menu = require('../models/menu.model');
+const Category = require('../models/menu.category.model');
 
-exports.getDashboard = (req, res) => {
+exports.getDashboard = async (req, res) => {
   if (!req.user) {
     res.redirect('/admin/login');
     return;
   }
-  Order.find({ placed: true }, (err, orders) => {
-    if (err) {
-      logger.error(err);
-    }
-    res.render('adminDashboard', { orders });
-  });
+  const orders = await Order.find({ placed: true, completed: false });
+  res.render('adminDashboard', { orders });
 };
 
-exports.getAlterMenu = (req, res) => {
+exports.getAlterMenu = async (req, res) => {
   if (!req.user) {
     res.redirect('/admin/login');
     return;
   }
-  Menu.find({}, (err, menu) => {
-    if (err) {
-      logger.error(err);
-    }
-    res.render('alterMenu', { menu });
-  });
+  const menu = await Menu.find({});
+  const categories = await Category.find({});
+  res.render('alterMenu', { menu, categories });
 };
+
+exports.markAsComplete = [
+  sanitizeBody('*').escape(),
+  async (req, res) => {
+    const order = await Order.findById(req.body.orderId);
+    order.completed = true;
+    order.save();
+    res.redirect('/admin');
+  },
+];
