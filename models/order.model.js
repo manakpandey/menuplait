@@ -23,6 +23,7 @@ const orderSchema = new Schema({
     type: String,
     enum: ['cash', 'paytm', 'gpay'],
   },
+  token: Number,
 }, {
   timestamps: true,
 });

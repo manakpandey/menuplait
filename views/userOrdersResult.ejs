@@ -12,7 +12,7 @@
 
 <body>
   <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <a class="navbar-brand">GYM Khaana</a>
+    <a class="navbar-brand" href="/">GYM Khaana</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -42,7 +42,7 @@
                     class="list-group-item list-group-item-danger m-1 text-center" 
                   <% } %>
                   data-toggle="modal" data-target=<%= `#modifyModal${i}` %>>
-                    999
+                    <%= orders[i].token %>
                   </li> 
                   </ul>
             </div> 
@@ -51,7 +51,11 @@
                           <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
+<<<<<<< HEAD
                                 <h5 class="modal-title" id="exampleModalScrollableTitle">Order No. <%=orders[i].token%>/h5>
+=======
+                                <div class="modal-title">Order No: <%= orders[i].token %></h5>
+>>>>>>> 6108416ad5900fa10e46484acce1d3122f72c5e2
                                 <% if(orders[i].placed==true){ %>
                                   <span class="badge badge-success ml-3 mt-2 p-1">Order Placed</span>
                                 <% } else{ %> 
@@ -97,7 +101,9 @@
                       <% } %>
         <% } else{ %>
           <div class="text-center">
-            <h4>No orders found!!!</h4>  
+            <div class="alert alert-warning" role="alert">
+              No Active Orders
+            </div>  
           </div>
         <% } %> 
       </div>

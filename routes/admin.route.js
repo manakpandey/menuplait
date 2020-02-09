@@ -18,6 +18,11 @@ router.get('/login', (req, res) => {
   res.render('login', { flash: req.flash().error });
 });
 
+router.get('/logout', (req, res) => {
+  req.logOut();
+  res.redirect('/admin');
+});
+
 router.get('/', getDashboard);
 router.get('/menu', getAlterMenu);
 router.post('/addMenuItem', postAddMenuItem);
