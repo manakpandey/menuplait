@@ -42,8 +42,8 @@
       </div>
       <% } %>
       <% for( let i = 0; i < orders.length; i++ ) { %>
-      <form action="admin/markAsComplete" method="POST">
-        <input hidden name="orderId" value=<%= orders[i].id %>>
+      <form action="/admin/markAsComplete" method="POST">
+        <input hidden name="orderId" value=<%= orders[i].id %>> 
         <div style="width: 50%;float: left">
           <div class="card m-2" id="orderCard">
             <div class="card-header">

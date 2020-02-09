@@ -1,7 +1,12 @@
 const { Router } = require('express');
 const passport = require('passport');
 const {
-  getDashboard, getAlterMenu, markAsComplete, getOrderHistory, getIncompleteOrders,
+  getDashboard,
+  getAlterMenu,
+  markAsComplete,
+  getOrderHistory,
+  getIncompleteOrders,
+  postCashVerification,
 } = require('../controllers/admin.controller');
 const { postAddMenuItem, modifyMenuItem, addCategory } = require('../controllers/modifyMenu.controller');
 
@@ -31,5 +36,6 @@ router.post('/modifyMenu', modifyMenuItem);
 router.post('/markAsComplete', markAsComplete);
 router.get('/orders', getOrderHistory);
 router.get('/incompleteOrders', getIncompleteOrders);
+router.post('/verifyCashPayment', postCashVerification);
 
 module.exports = router;
