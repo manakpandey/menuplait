@@ -25,6 +25,10 @@ exports.getAlterMenu = async (req, res) => {
 exports.markAsComplete = [
   sanitizeBody('*').escape(),
   async (req, res) => {
+    if (!req.user) {
+      res.redirect('/admin/login');
+      return;
+    }
     const order = await Order.findById(req.body.orderId);
     order.completed = true;
     order.save();
@@ -49,3 +53,17 @@ exports.getIncompleteOrders = async (req, res) => {
   const orders = await Order.find({ placed: false });
   res.render('incompleteOrders', { orders });
 };
+
+exports.postCashVerification = [
+  sanitizeBody('*').escape(),
+  async (req, res) => {
+    if (!req.user) {
+      res.redirect('/admin/login');
+      return;
+    }
+    const order = await Order.findById(req.body.orderId);
+    order.placed = true;
+    order.save();
+    res.redirect('/admin/incompleteOrders');
+  },
+];
