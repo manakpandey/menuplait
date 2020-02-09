@@ -31,3 +31,21 @@ exports.markAsComplete = [
     res.redirect('/admin');
   },
 ];
+
+exports.getOrderHistory = async (req, res) => {
+  if (!req.user) {
+    res.redirect('/admin/login');
+    return;
+  }
+  const orders = await Order.find({ completed: true });
+  res.render('orderHistory', { orders });
+};
+
+exports.getIncompleteOrders = async (req, res) => {
+  if (!req.user) {
+    res.redirect('/admin/login');
+    return;
+  }
+  const orders = await Order.find({ placed: false });
+  res.render('incompleteOrders', { orders });
+};

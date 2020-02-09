@@ -12,7 +12,7 @@
 
 <body>
   <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <a class="navbar-brand">GYM Khaana</a>
+    <a class="navbar-brand" href="/">GYM Khaana</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -26,79 +26,103 @@
     </div>
   </nav>
 
+  <div class="custom-control custom-switch mx-3 my-2 text-right" id="vegFilter">
+    <input type="checkbox" class="custom-control-input" id="vegOnly">
+    <label class="custom-control-label" for="vegOnly">Veg Only</label>
+  </div>
   <form method="POST">
     <div class="container" id="menu">
+      <% for( let j = 0; j < category.length; j++ ) { %>
+      <div class="category">
+        <div class="h6 mx-1 mt-4"><%= category[j].title %> </div>
+        <hr class="mx-1 mt-0" style="background-color: #121212;">
+      </div>
       <% for( let i = 0; i < menu.length; i++ ) { %>
+      <% if (menu[i].category == category[j].title) { %>
+      <% if (menu[i].veg) { %>
       <div class="card m-1" id=<%= `item${i}` %>>
-        <div class="d-flex flex-column">
-          <div class="p-2"><%= menu[i].id %>
-            <% if (menu[i].veg) { %>
-            <img class="mb-1" src="/img/veg.png" style="width: 1rem;height: 1rem;">
-            <% } else { %>
-            <img class="mb-1" src="/img/nveg.png" style="width: 1rem;height: 1rem;">
-            <% } %>
-          </div>
-          <div class="p-0">
-            <div class="d-flex flex-row justify-content-between">
-              <div class="p-2"><strong>&#8377 <%= menu[i].price %></strong></div>
-              <div class="p-2">
-                <div class="btn-group" role="group" style="visibility:hidden" id=<%= `addn${i}` %>>
-                  <button type="button" class="btn btn-secondary" onclick=<%= `subn(${i},${menu.length},${menu[i].price})` %>>-</button>
-                  <input type="number" class="form-control" style="width: 3rem;" name=<%= `quan${i}` %> id=<%= `quan${i}` %>
-                    value=0 readonly>
-                  <button type="button" class="btn btn-secondary" onclick=<%= `addn(${i},${menu[i].price})` %>>+</button>
+        <% } else { %>
+        <div class="card m-1 nveg" id=<%= `item${i}` %>>
+          <% } %>
+          <div class="d-flex flex-column">
+            <div class="p-2"><%= menu[i].id %>
+              <% if (menu[i].veg) { %>
+              <img class="mb-1" src="/img/veg.png" style="width: 1rem;height: 1rem;">
+              <% } else { %>
+              <img class="mb-1" src="/img/nveg.png" style="width: 1rem;height: 1rem;">
+              <% } %>
+            </div>
+            <div class="p-0">
+              <div class="d-flex flex-row justify-content-between">
+                <div class="p-2"><strong>&#8377 <%= menu[i].price %></strong></div>
+                <div class="p-2">
+                  <div class="btn-group" role="group" style="visibility:hidden" id=<%= `addn${i}` %>>
+                    <button type="button" class="btn btn-secondary"
+                      onclick=<%= `subn(${i},${menu.length},${menu[i].price})` %>>-</button>
+                    <input type="number" class="form-control" style="width: 3rem;" name=<%= `quan${i}` %>
+                      id=<%= `quan${i}` %> value=0 readonly>
+                    <button type="button" class="btn btn-secondary"
+                      onclick=<%= `addn(${i},${menu[i].price})` %>>+</button>
+                  </div>
+                  <button type="button" class="btn btn-primary px-3" id=<%= `add${i}` %>
+                    onclick=<%= `add(${i},${menu[i].price})` %>>Add</button>
                 </div>
-                <button type="button" class="btn btn-primary px-3" id=<%= `add${i}` %>
-                  onclick=<%= `add(${i},${menu[i].price})` %>>Add</button>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <% } %>
-      <div class="d-flex flex-row justify-content-center mt-3">
-        <div class="p-3 btn btn-outline-dark" onclick=<%= `addMore(${menu.length})` %> style="visibility: hidden;"
-          id="addMore">
-          <img src="/img/food.svg" class="p-1" style="width: 1.5rem;height: 1.5rem">
-          <a class="p-1">Add More</a>
+        <% } %>
+        <% } %>
+        <% } %>
+
+        <div class="d-flex flex-row justify-content-center mt-3">
+          <div class="p-3 btn btn-outline-dark" onclick=<%= `addMore(${menu.length})` %> style="visibility: hidden;"
+            id="addMore">
+            <img src="/img/food.svg" class="p-1" style="width: 1.5rem;height: 1.5rem">
+            <a class="p-1">Add More</a>
+          </div>
+        </div>
+        <button type="button" id="checkout" class="btn btn-secondary submit-button"
+          onclick=<%= `confirmOrder(${menu.length})` %>>Checkout</button>
+        <div class="confirm-button p-4" id="confirm">
+          <div class="d-flex flex-row justify-content-between pb-2">
+            <p class="h6">Total</p>
+            <p class="h6" id="totalAmt">&#8377 500</p>
+          </div>
+          <button type="button" class="btn btn-success" id="confirmButton" style="width: 100%;">Confirm Order</button>
         </div>
       </div>
-      <button type="button" id="checkout" class="btn btn-primary submit-button"
-        onclick=<%= `confirmOrder(${menu.length})` %>>Checkout</button>
-      <div class="confirm-button p-4" id="confirm">
-        <div class="d-flex flex-row justify-content-between pb-2">
-          <p class="h6">Total</p>
-          <p class="h6" id="totalAmt">&#8377 500</p>
+      <div class="container" id="userDetails" style="display: none;">
+        <div class="my-4">
+          <input type="text" class="form-control m-1" name="username" id="username" placeholder="Name" required>
+          <input type="tel" pattern="[1-9][0-9]{9}" class="form-control m-1" name="userNum" id="userNum"
+            placeholder="Mobile Number" required>
         </div>
-        <button type="button" class="btn btn-success" id="confirmButton" style="width: 100%;">Confirm Order</button>
+        <div class="container card px-4 py-2">
+          <div class="h6 mt-4">Payment Method</div>
+          <hr class="mt-0" style="background-color: #121212;">
+          <div class="form-check py-2 px-3">
+            <input class="form-check-input" type="radio" name="pType" id="gpay" value="gpay" required>
+            <label class="form-check-label" for="gpay">
+              <img src="/img/gpay.svg" class="px-2" style="width: auto;height:2rem">
+            </label>
+          </div>
+          <div class="form-check py-2 px-3">
+            <input class="form-check-input" type="radio" name="pType" id="paytm" value="paytm" required>
+            <label class="form-check-label" for="paytm">
+              <img src="/img/paytm.svg" class="px-2" style="width: auto;height:2rem">
+            </label>
+          </div>
+          <div class="form-check py-2 px-3">
+            <input class="form-check-input" type="radio" name="pType" id="cash" value="cash" required>
+            <label class="form-check-label" for="cash">
+              <div class="px-2">Cash</div>
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success submit-button" id="placeOrder" style="visibility: visible;">Place
+          Order</button>
       </div>
-    </div>
-    <div class="container" id="userDetails" style="display: none;">
-      <div class="my-4">
-        <input type="text" class="form-control m-1" name="username" id="username" placeholder="Name" required>
-        <input type="tel" pattern="[1-9][0-9]{9}" class="form-control m-1" name="userNum" id="userNum"
-          placeholder="Mobile Number" required>
-      </div>
-      <div class="container">
-        <div class="form-check p-2">
-          <input class="form-check-input" type="radio" name="pType" id="gpay" value="gpay" required>
-          <label class="form-check-label" for="gpay">
-            <img src="/img/gpay.svg" style="width: auto;height:2rem">
-          </label>
-        </div>
-        <div class="form-check p-2">
-          <input class="form-check-input" type="radio" name="pType" id="paytm" value="paytm" required>
-          <label class="form-check-label" for="paytm">
-            <img src="/img/paytm.svg" style="width: auto;height:2rem">
-          </label>
-        </div>
-        <div class="form-check p-2">
-          <input class="form-check-input" type="radio" name="pType" id="cash" value="cash" required>
-          <label class="form-check-label" for="cash">Cash</label>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-success submit-button" id="placeOrder"  style="visibility: visible;">Place Order</button>
-    </div>
   </form>
 
   <script src="/jquery/jquery-3.2.1.slim.min.js"></script>
@@ -108,10 +132,10 @@
     let total = 0
     let totalAmt = 0
     let confirmFlag = false
-    function add(id,price) {
+    function add(id, price) {
       document.getElementById(`quan${id}`).value++
       total++
-      totalAmt+=price
+      totalAmt += price
       document.getElementById(`add${id}`).style.display = "none"
       document.getElementById(`addn${id}`).style.visibility = "visible"
       if (total >= 1) {
@@ -119,10 +143,10 @@
       }
       updateTotal()
     }
-    function addn(id,price) {
+    function addn(id, price) {
       document.getElementById(`quan${id}`).value++
       total++
-      totalAmt+=price
+      totalAmt += price
       updateTotal()
     }
     function subn(id, len, price) {
@@ -132,7 +156,7 @@
       if (quan.value == 1) {
         quan.value--
         total--
-        totalAmt-=price
+        totalAmt -= price
         if (confirmFlag) {
           document.getElementById(`item${id}`).style.display = "none"
           if (total == 0) {
@@ -145,7 +169,7 @@
       else {
         quan.value--
         total--
-        totalAmt-=price
+        totalAmt -= price
       }
       if (total == 0) {
         document.getElementById('checkout').style.visibility = "hidden"
@@ -158,6 +182,11 @@
           document.getElementById(`item${i}`).style.display = "none"
         }
       }
+      const categories = document.getElementsByClassName('category')
+      for (let i = 0; i < categories.length; i++) {
+        categories[i].style.display = 'none'
+      }
+      document.getElementById('vegFilter').style.display = 'none'
       document.getElementById('checkout').style.visibility = "hidden"
       document.getElementById('confirm').style.visibility = "visible"
       document.getElementById('addMore').style.visibility = "visible"
@@ -171,17 +200,33 @@
         }
       }
       confirmFlag = false
+      const categories = document.getElementsByClassName('category')
+      for (let i = 0; i < categories.length; i++) {
+        categories[i].style.display = 'block'
+      }
       document.getElementById('checkout').style.visibility = "visible"
       document.getElementById('confirm').style.visibility = "hidden"
       document.getElementById('addMore').style.visibility = "hidden"
     }
-    function updateTotal(){
+    function updateTotal() {
       document.getElementById('totalAmt').innerHTML = `&#8377 ${totalAmt}`
+    }
+    function vegOnly(menu) {
+      console.log(menu)
     }
 
     $('#confirmButton').click(() => {
       $('#menu').hide()
       $('#userDetails').show()
+    })
+
+    $('#vegOnly').click(() => {
+      if ($('#vegOnly').prop('checked')) {
+        $('.nveg').hide()
+      }
+      else {
+        $('.nveg').show()
+      }
     })
   </script>
 </body>

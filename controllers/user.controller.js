@@ -2,15 +2,13 @@ const { sanitizeBody } = require('express-validator');
 const logger = require('../winston');
 const Menu = require('../models/menu.model');
 const Order = require('../models/order.model');
+const Category = require('../models/menu.category.model');
 
-exports.getMenu = (req, res) => {
-  Menu.find({}, (err, menu) => {
-    if (err) {
-      logger.error(err);
-      return;
-    }
-    res.render('index', { menu });
-  });
+exports.getMenu = async (req, res) => {
+  const menu = await Menu.find({});
+  const category = await Category.find({});
+
+  res.render('index', { menu, category });
 };
 
 exports.postOrder = [
@@ -35,10 +33,10 @@ exports.postOrder = [
           amt += menu[i].price * quantity;
         }
       }
-      let placed = true;
-      // for until no payment gateway
-      if (req.body.ptype === 'cash') placed = false;
-
+      let placed = true; // for until no payment gateway
+      logger.debug(req.body.pType);
+      if (req.body.ptype === 'cash') placed = false; // for until no payment gateway
+      logger.debug(placed);
       const order = new Order({
         custName: req.body.username,
         custNumber: req.body.userNum,
@@ -49,7 +47,7 @@ exports.postOrder = [
           price,
         },
         payType: req.body.pType,
-        placed,
+        placed, // for until no payment gateway
       });
 
       order.save((error) => {
